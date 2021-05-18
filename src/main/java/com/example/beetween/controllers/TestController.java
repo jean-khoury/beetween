@@ -1,39 +1,53 @@
 package com.example.beetween.controllers;
 
 import com.example.beetween.models.Test;
-import com.example.beetween.repositories.TestRepository;
+import com.example.beetween.services.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/test")
+@RequestMapping("/tests")
 public class TestController {
-    @Autowired
-    private final TestRepository testRepository;
 
-    public TestController(TestRepository testRepository){
-        this.testRepository = testRepository;
+    private final TestService testService;
+
+    @Autowired
+    public TestController(TestService testService) {
+        this.testService = testService;
     }
-    @CrossOrigin
+
     @GetMapping("")
     public ResponseEntity<Iterable<Test>> getAllTests(){
-        Iterable<Test> tests = testRepository.findAll();
+        Iterable<Test> tests = testService.getAllTests();
         return ResponseEntity.ok().body(tests);
     }
 
-    @CrossOrigin
     @GetMapping("/{id}")
-    public ResponseEntity<Test> getTestById(@PathVariable (value="id") long id ) throws Exception {
-        Test movie = testRepository.findById(id).orElseThrow(()->new Exception("Id not found - " + id));
-
-        return ResponseEntity.ok().body(movie);
+    public ResponseEntity<Test> getTestById(@PathVariable (value="id") long id ) {
+        Test test = testService.getTestsById(id);
+        return ResponseEntity.ok().body(test);
     }
-    @CrossOrigin
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable("id") long id)
+    {
+        testService.delete(id);
+        return new ResponseEntity<String>("Deleted", HttpStatus.ACCEPTED);
+    }
+
     @PostMapping("")
-    public ResponseEntity<String> addTest(@RequestBody Test movie){
-        this.testRepository.save(movie);
+    public ResponseEntity<String> createTest(@RequestBody Test test){
+        testService.createTest(test);
         return new ResponseEntity<String>("Created", HttpStatus.CREATED);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Test> update(@PathVariable Long id, @RequestBody Test test)
+    {
+        Test result = testService.update(id, test.getName());
+        return ResponseEntity.ok().body(result);
+    }
+
 }
