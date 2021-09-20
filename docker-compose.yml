@@ -1,18 +1,18 @@
 version: '3.2'
 services:
-  beetween_springboot:
-    container_name: beetween_springboot
-    depends_on:
-      - beetween_db
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://beetween_db:5432/beetween_db
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=root
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-    image: beetween_image:latest
-    restart: always
-    ports:
-      - "8081:8081"
+#  beetween_springboot:
+#    container_name: beetween_springboot
+#    depends_on:
+#      - beetween_db
+#    environment:
+#      - SPRING_DATASOURCE_URL=jdbc:postgresql://beetween_db:5432/beetween_db
+#      - SPRING_DATASOURCE_USERNAME=root
+#      - SPRING_DATASOURCE_PASSWORD=root
+#      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+#    image: beetween_image:latest
+#    restart: always
+#    ports:
+#      - "8081:8081"
   beetween_db:
     container_name: beetween_db
     image: postgres

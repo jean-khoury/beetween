@@ -5,6 +5,8 @@ import com.example.beetween.exceptions.ResourceNotFoundException;
 import com.example.beetween.models.Test;
 import com.example.beetween.repositories.TestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,8 +21,8 @@ public class TestService {
         this.testRepository = testRepository;
     }
 
-    public List<Test> getAllTests() {
-        return testRepository.findAll();
+    public Page<Test> getAllTests(PageRequest request) {
+        return testRepository.findAll(request);
     }
 
     public Test createTest(Test test) {
